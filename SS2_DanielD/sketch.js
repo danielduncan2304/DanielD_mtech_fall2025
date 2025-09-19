@@ -124,6 +124,13 @@ rect(370,140,60,60)
 //snowflakes flying around 
 let x = random (200,800)
 let y = random (150,800)
+if (x>800) {
+  x = 0
+}
+if (y>800){
+y = 0
+
+}
 
   fill(255,255,255,130)
 strokeWeight(0)
