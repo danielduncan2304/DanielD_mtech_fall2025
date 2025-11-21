@@ -890,6 +890,15 @@ function keyPressed(){
     state = "game";
     ellipseX = 355-6;
     ellipseY = 350;
+
+    p1X = 30;
+    p1Y = 375
+    p2X = 670;
+    p2Y = 375;
+    xMove = 4;
+    yMove = 3;
+    pMove = 8;
+
   }
 //keys 1,2,3 select background + scene
   if (key === '1'){
