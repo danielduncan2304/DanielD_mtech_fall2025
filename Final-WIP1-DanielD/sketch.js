@@ -6,8 +6,8 @@
 //ellipse variables
   let ellipseX = 350;
   let ellipseY = 350;
-  let xMove = 10;
-  let yMove = 7;
+  let xMove = 4;
+  let yMove = 3;
 
 //images
   let skull;
@@ -60,7 +60,7 @@
   let p1Y = 375;
   let p2X = 670;
   let p2Y = 375
-  let pMove = 15;
+  let pMove = 8;
 
   let p1Point = 0;
   let p2Point = 0;
@@ -820,9 +820,9 @@ function fastfwd(){
    if (ellipseX >= fX-30 && ellipseX <= fX+30 && ellipseY >= fY-30 && ellipseY <= fY+30)
       {
         fX = 800;
-        xMove = xMove*1.75;
-        yMove = yMove*1.75;
-        pMove = pMove*1.85;
+        xMove = xMove*1.6;
+        yMove = yMove*1.6;
+        pMove = pMove*1.8;
         
       }
 }
