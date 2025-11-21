@@ -41,7 +41,7 @@
   let whichPower = 4;
 
 //arrays
-  let powerArray = []; //array containing 3 power up types
+  //let powerArray = []; //array containing 3 power up types
   let powerPosX = [175, 190, 200, 225, 280, 315, 375, 400, 450, 500, 550]; // array containing x positions of power ups
   let powerPosY = [150, 200, 250, 300, 375, 400, 450, 500, 550]; // array containing y positions of power ups 
 
@@ -90,9 +90,9 @@ function setup() {
   textFont('Courier New');
   imageMode(CENTER);
 
-  powerArray[0] = flash();
-  powerArray[1] = fastfwd();
-  powerArray[2] = slowmo();
+  // powerArray[0] = flash();
+  // powerArray[1] = fastfwd();
+  // powerArray[2] = slowmo();
 
 }
 
@@ -949,7 +949,7 @@ function keyPressed(){
     fX = 350;
     sX = 450;
   //selects a random power up between the three functions assigned in the array
-    whichPower = int(random(powerArray.length));
+    whichPower = int(random(3));
   
   //selects a random x and y coordinate for each powerup each time key is pressed
     fbX = powerPosX[int(random(powerPosX.length))];
@@ -972,6 +972,35 @@ function keyPressed(){
   }
 
   
+  // for a for loop application:
+  //power up "timer" using millis()
+
+  /*
+  currentTime = millis()
+  let lastTime
+----within powerup active if statement----
+  if currentTime-lastTime >= 5000
+  */
+
+
+
+
+/*
+  if ball pos = power up pos
+  multiflag = true
+  startTimer 
+  -----effect-----
+    if startTimer >= 5 (seconds){
+    multiflag = false}
+
+
+
+
+
+*/
+
+
+
 
 // in each game function : 
 // if millis() > xxx number, increments xMove + yMove;
