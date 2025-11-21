@@ -993,13 +993,41 @@ function keyPressed(){
     if startTimer >= 5 (seconds){
     multiflag = false}
 
-
-
-
-
 */
 
 
+/*
+  for classes, look at mateo code for object oriented ellipse 
+  that moves 
+*/
+
+/*
+ consolidate preGame 
+  instead of having preA preB and preC, create a general preGen function
+  with text instructions (since those are consistent in all three)
+  and then an if statement in 
+  function preGame() that will change the background and pngs based on keypressed()
+  so----
+
+  function preGame(){
+    preGen();
+        ** preGen() containing welcome text, player1 inst, player 2 inst **
+
+    if (key === '1'){
+      background(rgb)
+      ellipse
+    }
+    if (key === '2'){
+    image(soccerball)
+    image(soccerfield)
+    }
+    if (key === '3'){
+    image(astronaut)
+    image(space)
+    }
+  }
+
+*/
 
 
 // in each game function : 
