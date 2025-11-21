@@ -4,38 +4,52 @@
   let b = 255;
 
   let ellipseX = 350;
-  let ellipseY = 350;
-  let xMove = 5;
-  let yMove = 5;
+  let ellipseY = 250;
+  let xMove = 9;
+  let yMove = 7;
   
 
   let p1X = 30; 
   let p1Y = 375;
   let p2X = 670;
   let p2Y = 375
+  let pMove = 12;
+
   
   //png icons
   let flashbang;
   let fastforward;
   let slowmotion;
-  
+
   //3 types of power ups
   let fbActive = false; 
-  let fbX = 250;
-  let fbY = 250;
+  let fbX = 200;
+  let fbY = 200;
+
   let fastActive = false; 
   let fX = 350;
   let fY = 350;
+
   let slowActive = false; 
   let sX = 450;
   let sY = 450;
 
+  // //powerup timer
+  // let timeElapsed = 0;
+  // let goalTime = 5000;
+
+  // variable for tracking which power up is chosen
+  let whichPower = 4;
+
   //arrays
   let powerArray = []; // array containing power up 3 types 
-  let powerPosX = []; // array containing x positions of power ups
-  let powerPosY = []; //array containing y positions of power ups
+  let powerPosX = [175, 190, 200, 225, 280, 315, 375, 400, 450, 500, 550]; // array containing x positions of power ups
+  let powerPosY = [150, 200, 250, 300, 375, 400, 450, 500, 550]; //array containing y positions of power ups
 
-  
+  //timer
+  let currentTime = 0;
+  let prevTime = 0;
+
 
 function preload(){
   flashbang = loadImage("powerups/flashbang.png");
@@ -46,10 +60,38 @@ function preload(){
 function setup() {
   createCanvas(700, 700);
   imageMode(CENTER);
-   powerArray[1] = flash()
+
+    powerArray[0] = flash();
+    powerArray[1] = fastfwd();
+    powerArray[2] = slowmo();
+
+    
+
 }
 
 function draw() {
+//run gameA
+  gameA()
+   
+
+  //timer
+  strokeWeight(1);
+  fill(255)
+  stroke(255);
+  textSize(30);
+  textFont('Courier New')
+
+  currentTime = (millis()/1000);
+  text("Round:", width/2 - 110, height/8);
+  textSize(28);
+  text(round(currentTime-prevTime,2), width/2, height/8)
+}
+
+
+
+
+
+function gameA(){
   background(220);
 
  //normal theme
@@ -103,71 +145,140 @@ if (ellipseX < p1X+25 && ellipseY > p1Y-50 && ellipseY < p1Y +50){
     yMove = -yMove;
   }
 
+
+  //delete afterwards
+  if (ellipseX >= width-35 || ellipseX <= 35){
+    xMove = -xMove;
+  }
+
    //player 1 movement
   if (keyIsDown(87)){
-    p1Y = p1Y - 12;
+    p1Y = p1Y - pMove;;
   }
   if (keyIsDown(83)){
-    p1Y = p1Y + 12;
+    p1Y = p1Y + pMove;
   }
    //player 2 movement
   if (keyIsDown(UP_ARROW))
 	  {
-		  p2Y = p2Y - 12;
+		  p2Y = p2Y - pMove;
 	  }
   if (keyIsDown(DOWN_ARROW))
 	  {
-		  p2Y = p2Y + 12;
+		  p2Y = p2Y + pMove;
 	  }
 
 
-  flash();
 
-  
-  
-   
+    // whichPower = int(random(powerArray.length));
+    // whichPower = 2;
+    // print(whichPower);
+
+
+    if (whichPower == 0){
+      flash();
+     
+    }
+    if (whichPower == 1){
+      fastfwd();
+     
+    }
+    if (whichPower == 2){
+      slowmo();
+ 
+    }
+      
+
 }
 
 function flash(){
-   
+
+
     image(flashbang, fbX, fbY, flashbang.width/8, flashbang.height/8);
-    
-    if(ellipseX == fbX && ellipseY == fbY)
-      {
-        fbActive = true;
-          if (fbActive == true)
-            {
-              fbX = 800;
-              for (let i = 0; i < 1500; i++)
-                {
-                  r = 255;
-                  g = 255;
-                  b = 255;
-                  print(i);
-                }
-              fbActive = false;
-            }
-          if (fbActive = false){
-              r = 155;
-              g = 100;
-              b = 255;
-          }            
-      }
-
-
-}
-
-function slowmo(){
-  // image(slowmotion, sX, sY, slowmotion.width/8, slowmotion.height/8);
-  //   if (ellipseX == sX && ellipseY == sY)
-  //     {slowActive = true;
-    
-
-  //     }
+  
+    if(ellipseX >= fbX-30 && ellipseX <= fbX+30 && ellipseY>= fbY-30 && ellipseY <= fbY+30)
+        {
+          fbX = 800;
+          r = 255
+          g = 255;
+          b = 255;  
+        }
 
 
 }
 
 function fastfwd(){
   image(fastforward, fX, fY, fastforward.width/8, fastforward.height/8);
+
+   if (ellipseX >= fX-30 && ellipseX <= fX+30 && ellipseY >= fY-30 && ellipseY <= fY+30)
+      {
+        fX = 800;
+        xMove = xMove*1.75;
+        yMove = yMove*1.5;
+        pMove = pMove*1.5;
+        //setTimeout
+      }
+}
+
+function slowmo(){
+  image(slowmotion, sX, sY, slowmotion.width/9, slowmotion.height/9);
+
+    if (ellipseX >= sX-30 && ellipseX <= sX+30 && ellipseY >= sY-30 && ellipseY <= sY+30)
+      {
+            sX = 800;
+            xMove = xMove/2.5;
+            yMove = yMove/2.5;
+            pMove = pMove/3;
+            //setTimeout
+      }
+
+
+}
+
+
+function keyPressed(){
+  if (key === 'r'){
+    r = 155;
+    g = 100;
+    b = 255;
+
+    ellipseX = 350;
+    ellipseY = 250;
+    xMove = 9;
+    yMove = 7;
+    
+
+    p1X = 30; 
+    p1Y = 375;
+    p2X = 670;
+    p2Y = 375
+    pMove = 12;
+
+    fbX = 250;
+    fX = 350;
+    sX = 450;
+    whichPower = 4;
+
+    prevTime = currentTime;
+
+  }
+
+  if (key === 'd' || key === '/'){
+    fbX = 200;
+    fX = 350;
+    sX = 450;
+    whichPower = int(random(powerArray.length));
+    fbX = powerPosX[int(random(powerPosX.length))];
+    fbY = powerPosY[int(random(powerPosY.length))];
+    fX = powerPosX[int(random(powerPosX.length))];
+    fY = powerPosY[int(random(powerPosY.length))];
+    sX = powerPosX[int(random(powerPosX.length))];
+    sY = powerPosY[int(random(powerPosY.length))];
+
+
+    print(fbX, fbY)
+    print(fX, fY)
+    print(sX, sY)
+  }
+
 }
