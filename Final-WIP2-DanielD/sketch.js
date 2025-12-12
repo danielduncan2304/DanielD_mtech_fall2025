@@ -46,11 +46,12 @@
 
 //class variables
   let ellipses = [];
-  ellipses.length = 3;
+  ellipses.length = 10;
 
 //timer
   let currentTime = 0;
   let prevTime = 0;
+
 
 //game states
   let state = "preGame";
@@ -473,8 +474,6 @@ if(multiActive == true)
         ellipses[i].move();
       }
   }
-
- 
 
 
 //player scores
@@ -1393,16 +1392,12 @@ bug fixes:
       system issue?
 
 
-      ???? no current solution from Prof
+      ???? no current solution
 
   
 5) other smaller improvements 
  
-  consider removing the player win screens altogether and just 
-
-
-
-
+  consider removing the player win screens altogether and just having the screen blink
 
 
 
