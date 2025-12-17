@@ -8,9 +8,9 @@
   let ellipseY = 350;
 
 //my computer sometimes runs the sketch slow,
-//for others, originalX = 7
+//for others, originalX = 8
 //for me, originalX = 12 :(((
-  let originalX = 12;
+  let originalX = 10;
   let originalY = 3;
 
 
@@ -33,6 +33,20 @@
   let alienR;
   let showImage = true;
   let imageTransparency = 255;
+
+//sounds
+  let ballbeep;
+  let alienSL;
+  let alienSR;
+  let gameoverS;
+  let victoryS; 
+  let gruntSL;
+  let gruntSR;
+  let soccerhitS;
+  let astroS;
+  let hasPlayed = false;
+  let hasPlayedGO = false;
+
 
 //powerup images
   let flashbang;
@@ -109,6 +123,16 @@ function preload(){
   fastforward = loadImage("powerups/fastforward.png");
   slowmotion = loadImage("powerups/slowmotion.png");
   multiball = loadImage("powerups/multiball.png");
+//loads sounds
+  ballbeep = loadSound("sounds/ballbeep.mp3")
+  alienSL = loadSound("sounds/AlienL.mp3");
+  alienSR = loadSound("sounds/AlienR.mp3");
+  gameoverS = loadSound("sounds/gameover.mp3");
+  victoryS = loadSound("sounds/victory.mp3");
+  gruntSL = loadSound("sounds/gruntL.mp3");
+  gruntSR = loadSound("sounds/gruntR.mp3");
+  soccerhitS = loadSound("sounds/soccerhit.mp3");
+  astroS = loadSound("sounds/astro.mp3");
 }
 
 function setup() {
@@ -118,6 +142,18 @@ function setup() {
   textSize(45);
   textFont('Courier New');
   imageMode(CENTER);
+
+  ballbeep.setVolume(0.3);
+  alienSL.setVolume(0.5);
+  alienSR.setVolume(0.5);
+  gameoverS.setVolume(0.3);
+  victoryS.setVolume(0.3);
+  gruntSL.setVolume(0.3);
+  gruntSR.setVolume(0.3);
+  soccerhitS.setVolume(0.3);
+  astroS.setVolume(0.2);
+
+
 
   //each iteration of the loop creates a new MultiPong object 
   //for the array "ellipses" at the index of "i"
@@ -176,7 +212,7 @@ function preGame(){
   
 }
 
-// basic, plain purple background, plain ball, plain paddles etc
+// basic, plain purple background, plain ball, plarin paddles etc
   function preA(){
   //background color
   background (r,g,b);
@@ -357,6 +393,7 @@ function game(){
 function gameA(){
   //normal theme
   //background color
+
   background (r,g,b);
 
   //background border
@@ -421,17 +458,20 @@ else if (eMove == true){
   if (ellipseX > p2X-30 && ellipseY > p2Y-65 && ellipseY < p2Y +65){
     ellipseX = ellipseX-15;
     xMove = -xMove;
+    ballbeep.play();
   }
 
 //ellipse bounce for player 1
   if (ellipseX < p1X+30 && ellipseY > p1Y-65 && ellipseY < p1Y +65){
     ellipseX = ellipseX+15;
     xMove = -xMove;
+    ballbeep.play();
   }
 
 
 //ellipse bounce for top and bottom walls
   if (ellipseY >= height-40 || ellipseY <= 35){
+    ballbeep.play();
     if (ellipseY >= height-45){
       ellipseY = ellipseY-8
     }
@@ -520,10 +560,11 @@ if(multiActive == true)
   text('Player 2:', width-130, height/12);
   text(p2Point, width-50, height/12);
 
-  // if (powerUpActive == true)
-  // {
-  //   print(frameCount, frameCount-cFC)
-  // }
+  if (powerUpActive == true)
+  {
+    text(frameCount-cFC, width/2, height/2)
+  }
+
 
 }
 
@@ -575,17 +616,25 @@ function gameB(){
   if (ellipseX > p2X-80 && ellipseY > p2Y-65 && ellipseY < p2Y +65){
     ellipseX = ellipseX-3;
     xMove = -xMove;
+    gruntSR.play();
+    soccerhitS.setVolume(0.3);
+    soccerhitS.play();
   }
 
 //ellipse bounce for player 1
   if (ellipseX < p1X+75 && ellipseY > p1Y-65 && ellipseY < p1Y +65){
     ellipseX = ellipseX+3;
     xMove = -xMove;
+    gruntSL.play();
+    soccerhitS.setVolume(0.3);
+    soccerhitS.play();
   }
 
 
 //ellipse bounce for top and bottom walls
   if (ellipseY >= height-40 || ellipseY <= 35){
+    soccerhitS.setVolume(0.1);
+    soccerhitS.play();
     if (ellipseY >= height-45){
       ellipseY = ellipseY-3;
     }
@@ -753,17 +802,22 @@ function gameC(){
   if (ellipseX > p2X-97 && ellipseY > p2Y-80 && ellipseY < p2Y +70){
     ellipseX = ellipseX-3;
     xMove = -xMove;
+    alienSR.play();
+    astroS.play();
   }
 
 //ellipse bounce for player 1
   if (ellipseX < p1X+87 && ellipseY > p1Y-65 && ellipseY < p1Y +65){
     ellipseX = ellipseX+3;
     xMove = -xMove;
+    alienSL.play();
+    astroS.play();
   }
 
 
 //ellipse bounce for top and bottom walls
   if (ellipseY >= height-45 || ellipseY <= 35){
+    astroS.play();
     if (ellipseY >= height-45){
       ellipseY = ellipseY-3;
     }
@@ -888,17 +942,42 @@ else if (eMove == true){
 
 
 function gameOver(){
+  if (!gameoverS.isPlaying() && !hasPlayedGO){
+    gameoverS.play();
+    hasPlayedGO = true;
+  }
+
   background (255,0,0);
   fill(255);
   textSize(45);
-  text("Game Over!!!", width/2, height/3);
+  text("Game Over!!!", width/2, height/4);
+  if (p1Point >= 5) {text("Player 1 wins :)", width/2, height/3)}
+  if (p2Point >= 5) {text("Player 2 wins :)", width/2, height/3)}
   textSize(25);
   text("Press 'r' to Restart", width/2, height/2.5);
   image(skull, width/2, height/1.8, 300, 200);
 
+//player 1
+  // stroke(255);
+  fill(255);
+  text('Player 1:', 105, height/12);
+  text(p1Point, 190, height/12)
+//player 2
+  // stroke(255);
+  fill(255);
+  text('Player 2:', width-130, height/12);
+  text(p2Point, width-50, height/12);
+
 }
 
 function player1WinA(){
+
+  if (!victoryS.isPlaying() && !hasPlayed){
+    victoryS.play();
+    hasPlayed = true;
+  }
+
+
   background (r,g,b);
   strokeWeight(3.5);
   stroke(255,50,50);
@@ -933,6 +1012,10 @@ function player1WinA(){
 }
 
 function player2WinA(){
+  if (!victoryS.isPlaying() && !hasPlayed){
+    victoryS.play();
+    hasPlayed = true;
+  }
   background (r,g,b);
   strokeWeight(3.5);
   stroke(50,50,155);
@@ -966,6 +1049,10 @@ function player2WinA(){
 }
 
 function player1WinB(){
+  if (!victoryS.isPlaying() && !hasPlayed){
+    victoryS.play();
+    hasPlayed = true;
+  }
   //background soccer field
   background (r-100,g+100,b);
   //soccer ball png as ball and pixelated goalie as paddle
@@ -1005,6 +1092,10 @@ function player1WinB(){
 }
 
 function player2WinB(){
+  if (!victoryS.isPlaying() && !hasPlayed){
+    victoryS.play();
+    hasPlayed = true;
+  }
   //background soccer field
   background (r-100,g+100,b);
   //soccer ball png as ball and pixelated goalie as paddle
@@ -1042,6 +1133,10 @@ function player2WinB(){
 }
 
 function player1WinC(){
+  if (!victoryS.isPlaying() && !hasPlayed){
+    victoryS.play();
+    hasPlayed = true;
+  }
   //background color
   background (r,g,b);
 
@@ -1081,6 +1176,10 @@ function player1WinC(){
 }
 
 function player2WinC(){
+  if (!victoryS.isPlaying() && !hasPlayed){
+    victoryS.play();
+    hasPlayed = true;
+  }
   //background color
   background (r,g,b);
 
@@ -1203,15 +1302,17 @@ function multi(){
   image(multiball, mX, mY, multiball.width/10, multiball.height/10);
   if (ellipseX >= mX-30 && ellipseX <= mX+30 && ellipseY >= mY-30 && ellipseY <= mY+30)
     {
+      cFC = frameCount
       mX = 800;
       multiActive = true; //boolean to trigger display+move methods from class
       powerUpActive = true; //boolean to prevent activation of other powerups while this one is  active    
     }
 
-  if (frameCount % 1100 == 0){
+  if (frameCount - cFC >= 500 && xMove > 0 && yMove > 0){
     multiActive = false;
     powerUpActive = false;
     print("multi restore");
+ 
   }
 
 
@@ -1221,6 +1322,8 @@ function multi(){
 function mousePressed(){
   //variable resets
   multiActive = false;
+  hasPlayed = false;
+  hasPlayedGO = false;
   countdown = 3;
   if (state === "preGame"){
     state = "game";
@@ -1300,7 +1403,8 @@ function keyPressed(){
 
     powerUpActive = false;
     
-
+    hasPlayed = false;
+    hasPlayedGO = false;
   }
 //keys 1,2,3 select background + scene
   if (key === '1'){
@@ -1349,6 +1453,8 @@ function keyPressed(){
 
     powerUpActive = false;
   
+    hasPlayed = false;
+    hasPlayedGO = false;
 
     //point reset
     p1Point = 0;
@@ -1361,6 +1467,8 @@ function keyPressed(){
     //image resets
     imageTransparency = 255;
     showImage = true;
+
+    
   
   }
 
@@ -1455,16 +1563,7 @@ class MultiPong
 
 
 /* <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-                          Improvements for WIP2:
-
-sound effects??
-  paddle beep for hitting ball
-  soccer ball hit
-  grunt for soccer guys
-  maybe try sound for ball bouncing off top walls
-  alien noises
-  winner chime
-  game over sound effect
+                          Improvements from WIP2:
 
 
 */
