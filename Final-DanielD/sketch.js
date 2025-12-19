@@ -105,7 +105,7 @@
 //countdown timer
 let countdown = 3;
 
-
+//--------------------------------------------------------------------------------
 
 function preload(){
 //loads scene images
