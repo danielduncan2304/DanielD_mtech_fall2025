@@ -10,7 +10,7 @@
 //my computer sometimes runs the sketch slow,
 //for others, originalX = 8
 //for me, originalX = 12 :(((
-  let originalX = 10;
+  let originalX = 8;
   let originalY = 3;
 
 
@@ -144,8 +144,8 @@ function setup() {
   imageMode(CENTER);
 
   ballbeep.setVolume(0.3);
-  alienSL.setVolume(0.5);
-  alienSR.setVolume(0.5);
+  alienSL.setVolume(0.4);
+  alienSR.setVolume(0.4);
   gameoverS.setVolume(0.3);
   victoryS.setVolume(0.3);
   gruntSL.setVolume(0.3);
@@ -560,10 +560,10 @@ if(multiActive == true)
   text('Player 2:', width-130, height/12);
   text(p2Point, width-50, height/12);
 
-  if (powerUpActive == true)
-  {
-    text(frameCount-cFC, width/2, height/2)
-  }
+  // if (powerUpActive == true)
+  // {
+  //   text(frameCount-cFC, width/2, height/2)
+  // }
 
 
 }
